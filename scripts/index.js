@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", () => {
+
   // @todo: Темплейт карточки
   const cardTemplate = document.querySelector("#card-template").content;
   // @todo: DOM узлы
@@ -37,4 +37,4 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   renderCards(initialCards);
-});
+
