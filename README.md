@@ -1,2 +1,2 @@
-# Проектная работа Mesto
-https://github.com/webstudio101/mesto-project-ff
+# Mesto-FF The training project sprint 6
+
