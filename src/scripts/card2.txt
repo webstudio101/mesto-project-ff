@@ -10,8 +10,10 @@ export function createCard(item, { deleteCard, likeCard, openImageCard, userId }
   const cardDeleteButton = cardElement.querySelector(".card__delete-button");
   const likeCountNode = cardElement.querySelector(".like-button__count");
   const likeButtonNode = cardElement.querySelector(".card__like-button");
- 
-  
+  let cardToDelete = null;
+  const popupDeleteCard = document.querySelector('.popup_type_delete-card');
+  const popupDeleteCardButton = popupDeleteCard.querySelector('.popup__button_confirm');
+  const popupCloseButton = popupDeleteCard.querySelector('.popup__close-button');
 
   // Установка данных карточки
   cardTitle.textContent = item.name;
@@ -43,6 +45,23 @@ export function createCard(item, { deleteCard, likeCard, openImageCard, userId }
   return cardElement;
 }
 
+// export function deleteCard(event) {
+//   const deletedCard = event.target.closest(".card");
+
+//   if (!deletedCard) {
+//     console.error("Error: Card element not found.");
+//     return;
+//   }
+
+//   removeCard(deletedCard.id)
+//     .then(() => {
+//       deletedCard.remove();
+//     })
+//     .catch((err) => {
+//       console.error(`Error deleting card: ${err}`);
+//     });
+// }
+
 export function deleteCard(event) {
   const deletedCard = event.target.closest(".card");
 
@@ -51,16 +70,27 @@ export function deleteCard(event) {
     return;
   }
 
-  removeCard(deletedCard.id)
-    .then(() => {
-      deletedCard.remove();
-    })
-    .catch((err) => {
-      console.error(`Error deleting card: ${err}`);
-    });
+  cardToDelete = deletedCard;
+  openPopup(popupDeleteCard);
 }
 
+popupDeleteCardButton.addEventListener('click', () => {
+  if (cardToDelete) {
+    removeCard(cardToDelete.id)
+      .then(() => {
+        cardToDelete.remove();
+        cardToDelete = null;
+        closePopup(popupDeleteCard);
+      })
+      .catch((err) => {
+        console.error(`Error deleting card: ${err}`);
+      });
+  }
+});
 
+popupCloseButton.addEventListener('click', () => {
+  closePopup(popupDeleteCard);
+});
 
 export function toggleLikeButton(likeButton, cardNode) {
   const isMyLikeOnCard = likeButton.classList.contains("card__like-button_is-active");

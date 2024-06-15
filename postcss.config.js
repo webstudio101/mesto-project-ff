@@ -1,4 +1,4 @@
-// postcss.config.js
+// postcss.config.js KN - 7sp
 const autoprefixer = require("autoprefixer");
 const cssnano = require("cssnano");
 module.exports = {
