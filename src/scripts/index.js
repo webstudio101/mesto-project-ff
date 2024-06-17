@@ -2,6 +2,16 @@ import "../pages/index.css";
 import { createCard, deleteCard, toggleLikeButton } from "./card";
 import {openPopup, closePopup} from "./modal";
 import { enableValidation, clearValidation } from "./validation";
+
+const validationSettings = {
+  formSelector: ".popup__form",
+  inputSelector: ".popup__input",
+  submitButtonSelector: ".popup__button",
+  inactiveButtonClass: "popup__button_disabled",
+  inputErrorClass: "popup__input_type_error",
+  errorClass: "popup__error_visible",
+};
+
 import { getInitialCards, getUserData, patchUserData, postNewCard, updateAvatar } from "./api";
 const buttonPlus = document.querySelector(".profile__add-button");
 const modalNewCard = document.querySelector(".popup_type_new-card");
@@ -27,8 +37,10 @@ const popupNewCard = document.querySelector(".popup_type_new-card");
 const placesList = document.querySelector(".places__list");
 const imageModal = document.querySelector(".popup__image");
 const imageModalCaption = document.querySelector(".popup__caption");
+
 let userId = "";
 let userAvatar = "";
+
 function initializeApp() {
   Promise.all([getInitialCards(), getUserData()])
     .then(([initialCards, userData]) => {
@@ -114,7 +126,7 @@ function handleAddCard(createCard, deleteCard, placesList) {
         placesList.prepend(cardItem);
         closePopup(popupNewCard);
         newCardFormElement.reset();
-        clearValidation(newCardFormElement);
+        clearValidation(newCardFormElement, validationSettings);
       })
       .catch((err) => {
         console.error("Error add new card:", err);
@@ -157,7 +169,7 @@ const setPopupOpenEventListener = (openButton, popupNode, callBack) => {
     openPopup(popupNode);
 
     const popups = [popupEdit, popupNewCard, avatarPopup];
-    popups.forEach((popup) => clearValidation(popup));
+    popups.forEach((popup) => clearValidation(popup, validationSettings));
 
     if (typeof callBack === "function") {
       callBack();
@@ -218,7 +230,7 @@ function setupEventListeners() {
   handleEditProfile();
   handleEditAvatar();
   handleAddCard(createCard, deleteCard, placesList);
-  enableValidation();
+  enableValidation(validationSettings);
   setYear();
 }
 function handleError(error) {
